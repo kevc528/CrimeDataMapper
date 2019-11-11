@@ -20,10 +20,11 @@ var restCounter = 0;
 // lat, lng, date, time, address, description, cat
 var parsed = [];
 
-var masterData = csvdata.load('crimeTest.csv').then(
+var masterData = csvdata.load('final_crime_sorted.csv').then(
 	function (data) {
+		console.log(data);
 		for (var i = 0; i < data.length; i++) {
-			console.log(data[i]);
+			// console.log(data[i]);
 			var iterator = 0;
 
 			var json = {};
@@ -31,20 +32,20 @@ var masterData = csvdata.load('crimeTest.csv').then(
 			    if (data[i].hasOwnProperty(key)) {           
 			        // console.log(key, dat[i][key]);
 			        if (iterator == 0) {
-			        	json['lat'] = key;
+			        	json['lat'] = data[i][key];
 			        }
 			       	else if (iterator == 1) {
-			        	json['lng'] = key;
+			        	json['lng'] = data[i][key];
 			        }	else if (iterator == 2) {
-			        	json['date'] = key + " Philadelphia";
+			        	json['date'] = data[i][key];
 			        }	else if (iterator == 3) {
-			        	json['time'] = key;
+			        	json['time'] = data[i][key];
 			        }	else if (iterator == 4) {
-			        	json['address'] = key;
+			        	json['address'] = data[i][key];
 			        }	else if (iterator == 5) {
-			        	json['description'] = key;
+			        	json['description'] = data[i][key];
 			        }	else if (iterator == 6) {
-			        	json['category'] = key;
+			        	json['category'] = data[i][key];
 			        }
 			    }
 			    iterator++;
@@ -66,6 +67,12 @@ app.get('/', function(req, res) {
 
 
 // app data basic function
+
+app.get('/post', function(req, res) {
+	var sendFile = JSON.stringify(parsed);
+	res.send(sendFile);
+});
+
 app.post('/post', function(req, res) {
 	var sendFile = JSON.stringify(parsed);
 	res.send(sendFile);
